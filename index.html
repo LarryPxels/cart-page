@@ -1,2 +1,142 @@
-# cart-page
-just testing the cart code. 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shopping Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    .product, .cart {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .product-list, .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .product button, .cart button {
+      padding: 5px 10px;
+      background-color: #0d6efd;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .product button:hover, .cart button:hover {
+      background-color: #0a58ca;
+    }
+    .cart table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .cart th, .cart td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    .total {
+      text-align: right;
+      font-weight: bold;
+    }
+    .checkout-btn {
+      margin-top: 15px;
+      background: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Simple Shopping Cart</h1>
+
+  <div class="product">
+    <h2>Available Products</h2>
+    <div class="product-list" id="product-list">
+      <!-- Products will be added here -->
+    </div>
+  </div>
+
+  <div class="cart">
+    <h2>Your Cart</h2>
+    <div class="cart-items" id="cart-items">
+      <p>Your cart is empty.</p>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "T-Shirt", price: 15000 },
+      { id: 2, name: "Jeans", price: 35000 },
+      { id: 3, name: "Sneakers", price: 60000 },
+      { id: 4, name: "Cap", price: 10000 }
+    ];
+
+    let cart = [];
+
+    const productList = document.getElementById('product-list');
+    const cartItems = document.getElementById('cart-items');
+
+    function displayProducts() {
+      products.forEach(product => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+          ${product.name} - UGX ${product.price}
+          <button onclick="addToCart(${product.id})">Add to Cart</button>
+        `;
+        productList.appendChild(div);
+      });
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      cart.push(product);
+      updateCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+
+    function updateCart() {
+      if (cart.length === 0) {
+        cartItems.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+
+      let html = "<table><tr><th>Item</th><th>Price</th><th>Action</th></tr>";
+      let total = 0;
+      cart.forEach((item, index) => {
+        html += `<tr>
+          <td>${item.name}</td>
+          <td>UGX ${item.price}</td>
+          <td><button onclick="removeFromCart(${index})">Remove</button></td>
+        </tr>`;
+        total += item.price;
+      });
+
+      const shipping = 5000;
+      html += `<tr><td colspan="2" class="total">Shipping Fee</td><td>UGX ${shipping}</td></tr>`;
+      html += `<tr><td colspan="2" class="total">Total</td><td>UGX ${total + shipping}</td></tr>`;
+      html += "</table>";
+      cartItems.innerHTML = html;
+    }
+
+    function checkout() {
+      alert("Checkout coming soon! (Integrate payment later)");
+    }
+
+    displayProducts();
+  </script>
+</body>
+</html>
