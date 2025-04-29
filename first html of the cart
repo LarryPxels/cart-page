@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Cart</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .cart { border: 1px solid #ccc; padding: 15px; max-width: 500px; margin: auto; }
+    .cart-item { display: flex; justify-content: space-between; margin-bottom: 10px; }
+    .cart-item span { width: 100px; }
+    .total { font-weight: bold; }
+    .empty { text-align: center; color: #777; }
+  </style>
+</head>
+<body>
+
+  <div class="cart">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <p id="empty-msg" class="empty">Your cart is empty.</p>
+    <hr>
+    <p class="total">Subtotal: $<span id="subtotal">0.00</span></p>
+    <p class="total">Shipping: $<span id="shipping">5.00</span></p>
+    <p class="total">Total: $<span id="total">0.00</span></p>
+    <button onclick="checkout()">Checkout</button>
+  </div>
+
+  <script>
+    const cart = [
+      { name: "Item A", price: 10.00, quantity: 2 },
+      { name: "Item B", price: 15.00, quantity: 1 }
+    ];
+
+    const cartItemsDiv = document.getElementById("cart-items");
+    const emptyMsg = document.getElementById("empty-msg");
+
+    function updateCart() {
+      cartItemsDiv.innerHTML = "";
+      let subtotal = 0;
+
+      if (cart.length === 0) {
+        emptyMsg.style.display = "block";
+      } else {
+        emptyMsg.style.display = "none";
+        cart.forEach(item => {
+          const line = document.createElement("div");
+          line.className = "cart-item";
+          line.innerHTML = `<span>${item.name}</span><span>$${item.price.toFixed(2)}</span><span>Qty: ${item.quantity}</span>`;
+          cartItemsDiv.appendChild(line);
+          subtotal += item.price * item.quantity;
+        });
+      }
+
+      document.getElementById("subtotal").innerText = subtotal.toFixed(2);
+      const shipping = subtotal > 0 ? 5.00 : 0.00;
+      document.getElementById("shipping").innerText = shipping.toFixed(2);
+      document.getElementById("total").innerText = (subtotal + shipping).toFixed(2);
+    }
+
+    function checkout() {
+      alert("Checkout is not implemented, but this is where you'd do it.");
+    }
+
+    updateCart();
+  </script>
+
+</body>
+</html>
