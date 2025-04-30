@@ -133,7 +133,26 @@
     }
 
     function checkout() {
-      alert("Checkout coming soon! (Integrate payment later)");
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return'
+      }
+      let message = "Hello Larry, I want to Order:\n\n";
+      let total = 0;
+      cart.forEach((item, index) => {
+        message += `${index + 1}. {$item.name} - UGX ${item.price}\n`;
+        total+=item.price;
+      });
+      const shipping = 5000
+      total += shipping;
+      message += `\nShipping:UGX ${shipping}`;
+      message += `\nTotal: UGX ${total}`;
+      message += `\n\nMy name is: \nMy phone number is: \nMy delivery location is:`;
+      const encodedMsg = encodeURIComponent(message);
+      consts phoneNumber ="256740760465"; 
+      const whatsAppURL = `https://wa.me/${phoneNumber}?text=${encodeMsg}`;
+
+      window.open(whatsAppURL,"_blank");
     }
 
     displayProducts();
